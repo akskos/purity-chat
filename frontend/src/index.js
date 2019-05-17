@@ -6,7 +6,7 @@ import style from "./index.css";
 
 const dostuff = () => {
   console.log("hello");
-  const ws = new WS("localhost:3000");
+  const ws = new WS("localhost:8080");
   ws.on('open', function open() {
     const payload = {
       type: 'msg',
