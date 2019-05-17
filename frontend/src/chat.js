@@ -24,13 +24,15 @@ export default class Chat extends React.Component {
       messages: [],
       inputTextValue: '',
     }
-    addListener(this.addMessage);
 		this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addMessage = this.addMessage.bind(this);
+    addListener(this.addMessage);
   }
 
   addMessage(text) {
     console.log('chat: ', text)
+    this.setState({messages: [...this.state.messages, text]});
   }
 
   sendMessage(event) {
@@ -54,6 +56,9 @@ export default class Chat extends React.Component {
           <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
+        {this.state.messages.map((item, key) =>
+          <p key={key}>{item}</p>
+        )}
       </div>
     )
   }
