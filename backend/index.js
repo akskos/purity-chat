@@ -1,23 +1,14 @@
 const WebSocket = require('ws');
 
+const ChatRoom = require('./chatroom');
+
 const wss = new WebSocket.Server({
     port: 8080,
 });
 
-let connections = [];
+let chatroom = new ChatRoom();
 
-function onMessage(msg) {
-    console.log("message received");
-    for (let ws of connections) {
-        ws.send('message received, pray to read it');
-    }
-}
+wss.on('connection', chatroom.onConnection.bind(chatroom));
+wss.on('close', chatroom.onDisconnect.bind(chatroom));
 
-function onConnection(ws) {
-    console.log("Connection received");
-    connections.push(ws);
-    ws.on('message', onMessage);
-    ws.send('connected');
-}
-
-wss.on('connection', onConnection);
+console.log('Chat server running on port ' + wss.address().port);
