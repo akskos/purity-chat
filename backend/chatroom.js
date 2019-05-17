@@ -1,10 +1,12 @@
 const generateName = require('./nameGenerator');
 const ChatClient = require('./chatClient');
+const Nun = require('./nun');
 
 class ChatRoom {
     constructor() {
         this.connections = [];
         this.messages = [];
+        this.nun = new Nun();
     }
 
     sendAll(jsonMessage) {
@@ -27,29 +29,26 @@ class ChatRoom {
             
             // React to different message types
             if (received.type == "msg") {
+                // This updates the nun status and - if needed - edits the message.
+                let filteredText = this.nun.reviseMessage(received.text);
                 let message = {
                     type: "msg",
                     sender: client.userName, 
-                    text: received.text
+                    text: filteredText
                 };
                 this.messages.push({
                     sender: client.userName,
-                    text: received.text
+                    text: filteredText
                 });
                 if (this.messages.length > 100) {
                     this.messages.shift();
                 }
                 this.sendAll(message);
+                this.sendAll(this.nun.getStatusMessage())
             }
 
             if (received.type == "info") {
-                let message = {
-                    type: "info",
-                    users: this.connections.map(user => {
-                        return user.userName;
-                    }),
-                    messages: this.messages
-                }
+                let message = this.getInfoMessage();
             }
         } catch (e) {
             console.warn(e.message);
@@ -68,6 +67,9 @@ class ChatRoom {
             type: "userConnected",
             userName: client.userName
         });
+        client.ws.send(JSON.stringify(this.getInfoMessage()));
+
+        // TODO: Check if connection is alive.
     }
 
     onDisconnect(ws) {
@@ -85,6 +87,17 @@ class ChatRoom {
         }
 
         this.connections.splice(indexToRemove, 1);
+    }
+
+    getInfoMessage() {
+        return {
+            type: "info",
+            users: this.connections.map(user => {
+                return user.userName;
+            }),
+            messages: this.messages,
+            nun: this.nun.getStatusMessage()
+        };
     }
 }
 

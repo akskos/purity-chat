@@ -12,6 +12,7 @@ stupidhack project
 ### Receiving room info:
 {  
 	"type": "info",  
+	"nun": <see receiving nun status>,
 	"users": [String],  
 	"messages":   
 	[{  
@@ -37,4 +38,10 @@ stupidhack project
 {  
 	"type": "userConnected"/"userDisconnected"  
 	"userName": String  
+}
+
+### Receiving nun status:
+{  
+	"type": "nunStatus",  
+	"anger": Int(0-4)  
 }
