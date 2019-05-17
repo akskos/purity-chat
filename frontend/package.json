@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "nconf": "^0.10.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "ws": "^7.0.0"
   }
 }

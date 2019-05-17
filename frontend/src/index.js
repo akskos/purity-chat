@@ -1,11 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
+import WS from "ws";
 
 import style from "./index.css";
 
 const dostuff = () => {
   console.log("hello");
+  const ws = new WS("localhost:3000");
+  ws.on('open', function open() {
+    const payload = {
+      type: 'msg',
+      text: 'hello'
+    }
+    ws.send(JSON.stringify(payload))
+  });
+  ws.on('message', function incoming(data) {
+    console.log(data);
+  });
 }
 
 const Index = () => (
