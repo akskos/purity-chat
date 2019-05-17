@@ -1,0 +1,115 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - 'akseli.ninja'
+        Origins:
+          - DomainName: !GetAtt S3Bucket.DomainName
+            Id: !Ref S3Bucket
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        Enabled: 'true'
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods:
+          - HEAD
+          - GET
+          TargetOriginId: !Ref S3Bucket
+          ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+          ViewerProtocolPolicy: allow-all
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          SslSupportMethod: sni-only
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Origin access identity for the cdn
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: 'puritychat.akseli.ninja'
+  BucketUploader:
+    Type: AWS::IAM::User
+    Properties:
+      Policies:
+        - PolicyName: "S3UploadPriviliges"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Resource: !GetAtt S3Bucket.Arn
+                Action:
+                - s3:ListBucket*
+              - Effect: Allow
+                Resource: !Sub "${S3Bucket.Arn}/*"
+                Action:
+                - s3:GetObject*
+                - s3:PutObject*
+                - s3:DeleteObject* 
+  BucketUploaderAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref BucketUploader
+  Route53RecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: 'akseli.ninja.'
+      Name: 'akseli.ninja.'
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: 'Z2FDTNDATAQYW2'
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt 
+      - CloudFrontDistribution
+      - DomainName
+    Description: URL for website hosted on S3 accessed through CloudFront
+  S3BucketSecureURL:
+    Value: !Join 
+      - ''
+      - - 'https://'
+        - !GetAtt 
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
+  IAMUserOutput:
+    Description: "User key"
+    Value: !Ref BucketUploaderAccessKey
+  IAMAccessKeyOutput:
+    Description: "User secret"
+    Value: !GetAtt BucketUploaderAccessKey.SecretAccessKey
