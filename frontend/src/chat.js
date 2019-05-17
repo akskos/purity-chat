@@ -1,6 +1,8 @@
 import React from "react";
+import { addListener } from "./ws.js";
 
 const dostuff = () => {
+
   console.log("hello");
   const ws = new WebSocket('ws://localhost:8080');
   ws.onopen = function(event) {
@@ -11,11 +13,23 @@ const dostuff = () => {
     ws.send(JSON.stringify(payload))
   }
   ws.onmessage = function(event) {
-    console.log(event.data);
+    console.log('chat', event.data);
   };
 }
 
 export default class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: []
+    }
+    addListener(this.addMessage);
+  }
+
+  addMessage(text) {
+    console.log('chat: ', text)
+  }
+
   render() {
     return (
       <div>
