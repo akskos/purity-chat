@@ -1,8 +1,10 @@
+import config from './config'
+
 let ws;
 let listeners = [];
 
 export const init = () => {
-  ws = new WebSocket('ws://localhost:8080');
+  ws = new WebSocket(config.server);
   ws.onmessage = function(event) {
     console.log(event)
     listeners.forEach(l => {
