@@ -11,17 +11,12 @@ export const init = () => {
   }
 }
 
-export const sendMsg = (msg) => {
+export const sendMessage = (msg) => {
   const payload = {
     type: 'msg',
     text: msg
   }
   ws.send(JSON.stringify(payload));
-  ws.onmessage = function(event) {
-    listeners.forEach(l => {
-      l(event.data)
-    });
-  }
 }
 
 export const addListener = (listener) => {
