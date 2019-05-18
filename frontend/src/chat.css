@@ -10,19 +10,21 @@
 }
 
 #chatbox {
-  width: 520px;
-  height: 330px;
-  background: url('./assets/chatbox.png');
-  background-size: cover;
+  width: 400px;
+  height: 280px;
+  background: url('./assets/chatbox-with-wings.png');
+  background-size: contain;
   overflow-y: scroll;
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 400px;
+  padding-right: 400px;
   padding-top: 100px;
   padding-bottom: 100px;
+  position: absolute;
 }
 
 .center {
   margin: auto;
-  width: 50%;
+  left: 0px;
+  right: 0px;
   padding: 10px;
 } 

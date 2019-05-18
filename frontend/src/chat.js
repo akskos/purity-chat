@@ -6,8 +6,7 @@ import nun1 from './assets/nun1.png';
 import nun3 from './assets/nun3.png';
 import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
-import nun6 from './assets/nun6.png';
-import nun7 from './assets/shame.gif';
+import nun6 from './assets/shame.gif';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -104,7 +103,7 @@ export default class Chat extends React.Component {
     return {
       id: uuid(),
       text,
-      sender: sender ? sender : "info",
+      sender: sender ? sender : "The Voice Above",
     };
   }
 
