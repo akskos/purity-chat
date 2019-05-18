@@ -7,6 +7,7 @@ import nun3 from './assets/nun3.png';
 import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
 import nun6 from './assets/nun6.png';
+import nun7 from './assets/shame.gif';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -78,13 +79,16 @@ export default class Chat extends React.Component {
       return nun3;
       break;
     case 2:
-      return nun4;
+      return nun5;
       break;
     case 3:
-      return nun5;
+      return nun4;
       break;
     case 4:
       return nun6;
+      break;
+    case 5:
+      return nun7;
       break;
     default:
       break;
