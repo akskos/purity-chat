@@ -37,7 +37,7 @@ class ChatRoom {
             // React to different message types
             if (received.type == "msg") {
                 // This updates the nun status and - if needed - edits the message.
-                let filteredText = this.nun.reviseMessage(received.text);
+                let filteredText = this.nun.reviseMessage(received.text, client);
                 let message = {
                     type: "msg",
                     sender: client.userName, 
@@ -73,13 +73,11 @@ class ChatRoom {
         ws.on('message', (msg) => {
             this.onMessage(client, msg);
         });
+        client.ws.send(JSON.stringify(this.getInfoMessage()));
         this.sendAll({
             type: "userConnected",
             userName: client.userName
         });
-        client.ws.send(JSON.stringify(this.getInfoMessage()));
-
-        // TODO: Check if connection is alive.
     }
 
     onDisconnect(ws) {

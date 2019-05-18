@@ -11,6 +11,14 @@ class Nun {
         this.holyWords = [];
         this.readWordLists();
         this.talkCallback = talkCallbackArg;
+        this.messagesSinceLastGuidance = 0;
+        this.previousMessageSender = null;
+        setInterval(() => {
+            if (this.messagesSinceLastGuidance > 6) {
+                this.talk('Help me get rid of hateful motherfuckos. Type \"Excommunicate\" if you find the previous message is bad bad bad, to help me fight blasphemy!', 0);
+                this.messagesSinceLastGuidance = 0;
+            }
+        }, 60000);
     }
 
     readWordLists() {
@@ -18,24 +26,38 @@ class Nun {
             input: fs.createReadStream('./data/curseWords.txt')
         });
         curseLines.on('line', (line)=> {
-            this.cursewords.push(line);
+            this.cursewords.push(line.toLowerCase());
         });
 
         let holyLines = readline.createInterface({
             input: fs.createReadStream('./data/holyWords.txt')
         });
         holyLines.on('line', (line)=> {
-            this.holyWords.push(line);
+            this.holyWords.push(line.toLowerCase());
         });
     }
 
     // React to the message by updating the state
-    reviseMessage(messageText) {
-        let cleanMessage = messageText.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+\r]/g, '').replace(/\s{2,}/g," ");
+    reviseMessage(messageText, sender) {
+        let cleanMessage = messageText.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+\r]/g, '').replace(/\s{2,}/g," ").toLowerCase();
 
         let curses = [];
         let holies = [];
-        for (let word of cleanMessage.split(' ')) {
+        let messageWords = cleanMessage.split(' ');
+        
+        if (messageWords.includes('excommunicate') && this.previousMessageSender) {
+            if (sender === this.previousMessageSender) {
+                talk('What you doing, you cannot excommunicate yourself...', 300);
+            } else if (sender.reputation < this.previousMessageSender.reputation) {
+                talk(this.previousMessageSender.userName + " is an honorable member of our community. Leave now.", 300);
+                setTimeout(sender.disconnect.bind(sender), 500);
+            } else if (sender.reputation > this.previousMessageSender.reputation) {
+                talk("I have learnt to trust you, " + sender.userName + ", " + this.previousMessageSender.userName + "must go!", 300);
+                setTimeout(this.previousMessageSender.disconnect.bind(this.previousMessageSender), 500);
+            }
+        }
+
+        for (let word of messageWords) {
             if (this.cursewords.includes(word)) {
                 curses.push(word);
             }
@@ -51,12 +73,17 @@ class Nun {
         this.anger += Math.min(1.5, curses.length * 0.4);
 
         if (curses.length > 0) {
+            sender.reputation -= 0.6 * curses.length;
             this.talk("Careful with " + curses.join(', '), Math.random(2000));
         }
 
         if (holies.length > 1) {
-            this.talk("Blessed be those who talk like angels.", Math.random(2000));
+            sender.reputation += 0.6 * curses.length;
+            this.talk("Blessed be those who talk like angels. " + sender.userName + " earned a purity coin <3", Math.random(2000));
         }
+
+        this.previousMessageSender = sender;
+        this.messagesSinceLastGuidance++;
 
         return messageText;
     }
@@ -71,7 +98,7 @@ class Nun {
     // Talk in the chat
     talk(msgText, delay) {
         if (!this.talkCallback) { throw 'Nun cannot talk, it does not have a talk callback!'; }
-
+        if (delay == null) {delay = 0;}
         setTimeout(() => {this.talkCallback(msgText)}, delay);
     }
 

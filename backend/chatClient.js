@@ -2,14 +2,14 @@ const pingRate = 6000;
 
 class ChatClient {
     constructor(wsArg, onDisconnect) {
-        this.name = '';
+        this.userName = '';
         this.ws = wsArg;
         this.onDisconnectCb = onDisconnect;
         this.alive = true;
+        this.reputation = 5;
         this.pingInterval = setInterval(() => {
             if (!this.alive) {
-                clearInterval(this.pingInterval);
-                this.onDisconnectCb(this.ws);
+                this.disconnect();
             }
             this.alive = false;
             this.ws.ping();
@@ -18,6 +18,11 @@ class ChatClient {
         this.ws.on('pong', () => {
             this.alive = true;
         });
+    }
+
+    disconnect() {
+        clearInterval(this.pingInterval);
+        this.onDisconnectCb(this.ws);
     }
 }
 
