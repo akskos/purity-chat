@@ -25,6 +25,12 @@ export default class Chat extends React.Component {
 
   addMessage(message) {
     switch (message.type) {
+    case 'info':
+      const users = message.users; 
+      const usersText = `${users.join(' ')} are discussing`;
+      const usersMsg = this.buildMessage(usersText, message.sender);
+      this.setState({messages: [...this.state.messages, usersMsg]})
+      break;
     case 'msg':
       const msg = this.buildMessage(message.text, message.sender);
       this.setState({messages: [...this.state.messages, msg]})
