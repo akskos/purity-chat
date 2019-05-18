@@ -71,6 +71,8 @@ export default class Chat extends React.Component {
   }
 
   mapAngerLevelToImage(level) {
+    const nun = document.getElementById("nun");
+    nun.style.width = "300px";
     switch (level) {
     case 0:
       return nun1;
@@ -88,6 +90,7 @@ export default class Chat extends React.Component {
       return nun6;
       break;
     case 5:
+      nun.style.width = "400px";
       return nun7;
       break;
     default:
