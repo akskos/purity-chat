@@ -1,5 +1,7 @@
 import React from "react";
 import { addListener, sendMessage } from "./ws.js";
+import './chat.css';
+import backgroundImg from './assets/backgroundclouds.png';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -39,7 +41,7 @@ export default class Chat extends React.Component {
           <input type="submit" value="send" />
         </form>
         {this.state.messages.map((item, key) =>
-          <p key={key}>{item}</p>
+          <p className="testClass" key={key}>{item}</p>
         )}
       </div>
     )
