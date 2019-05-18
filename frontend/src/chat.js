@@ -114,7 +114,7 @@ export default class Chat extends React.Component {
           <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
-        <div id="chatbox">
+        <div className="center" id="chatbox">
           {this.state.messages.map(item => {
             let text;
             if (item.sender === 'overlord') {
