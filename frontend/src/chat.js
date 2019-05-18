@@ -26,6 +26,13 @@ export default class Chat extends React.Component {
   addMessage(message) {
     switch (message.type) {
     case 'info':
+      console.log('got info');
+      const messages = message.messages.map(m => {
+        if (m.type === 'msg') {
+          return this.buildMessage(m.text, m.sender); 
+        }
+      });
+      this.setState({messages});
       const users = message.users; 
       const usersText = `${users.join(' ')} are discussing`;
       const usersMsg = this.buildMessage(usersText, message.sender);
@@ -74,7 +81,7 @@ export default class Chat extends React.Component {
   buildMessage(text, sender) {
     return {
       text,
-      sender: sender ? sender : 'angel',
+      sender,
     };
   }
 
