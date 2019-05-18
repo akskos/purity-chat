@@ -2,6 +2,10 @@ import React from "react";
 import { addListener, sendMessage } from "./ws.js";
 import './chat.css';
 import nun1 from './assets/nun1.png';
+import nun3 from './assets/nun3.png';
+import nun4 from './assets/nun4.png';
+import nun5 from './assets/nun5.png';
+import nun6 from './assets/nun6.png';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -15,6 +19,7 @@ export default class Chat extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addMessage = this.addMessage.bind(this);
     this.buildMessage = this.buildMessage.bind(this);
+    this.mapAngerLevelToImage = this.mapAngerLevelToImage.bind(this);
     addListener(this.addMessage);
   }
 
@@ -28,6 +33,32 @@ export default class Chat extends React.Component {
       const connectionText = `${message.userName} has joined`;
       const connMsg = this.buildMessage(connectionText, message.sender)
       this.setState({messages: [...this.state.messages, connMsg]})
+      break;
+    case 'nunStatus':
+      const angerLevel = message.anger;
+      this.setState({nun: this.mapAngerLevelToImage(angerLevel)});
+      break;
+    default:
+      break;
+    } 
+  }
+
+  mapAngerLevelToImage(level) {
+    switch (level) {
+    case 0:
+      return nun1;
+      break;
+    case 1:
+      return nun3;
+      break;
+    case 2:
+      return nun4;
+      break;
+    case 3:
+      return nun5;
+      break;
+    case 4:
+      return nun6;
       break;
     default:
       break;
