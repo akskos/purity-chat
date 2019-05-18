@@ -37,15 +37,11 @@ class Nun {
         });
     }
 
-    // React to the message by updating the state
-    reviseMessage(messageText, sender) {
-        let cleanMessage = messageText.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+\r]/g, '').replace(/\s{2,}/g," ").toLowerCase();
-
-        let curses = [];
-        let holies = [];
-        let messageWords = cleanMessage.split(' ');
-        
-        if (messageWords.includes('excommunicate') && this.previousMessageSender) {
+    tryExcommunicate(sender) {
+        if (this.messagesSinceLastGuidance == 0) {
+            talk('You know what happens when you try to excommunicate me, don\'t you?', 0);
+            setTimeOut(sender.disconnect.bind(sender));
+        } else if (this.previousMessageSender) {
             if (sender === this.previousMessageSender) {
                 talk('What you doing, you cannot excommunicate yourself...', 300);
             } else if (sender.reputation < this.previousMessageSender.reputation) {
@@ -55,6 +51,19 @@ class Nun {
                 talk("I have learnt to trust you, " + sender.userName + ", " + this.previousMessageSender.userName + "must go!", 300);
                 setTimeout(this.previousMessageSender.disconnect.bind(this.previousMessageSender), 500);
             }
+        }
+    }
+
+    // React to the message by updating the state
+    reviseMessage(messageText, sender) {
+        let cleanMessage = messageText.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+\r]/g, '').replace(/\s{2,}/g," ").toLowerCase();
+
+        let curses = [];
+        let holies = [];
+        let messageWords = cleanMessage.split(' ');
+        
+        if (messageWords.includes('excommunicate')) {
+            this.tryExcommunicate(sender);
         }
 
         for (let word of messageWords) {

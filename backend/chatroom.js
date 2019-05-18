@@ -67,6 +67,7 @@ class ChatRoom {
 
     onConnection(ws) {
         console.log('Connection received');
+        this.nun.messagesSinceLastGuidance++;
         var client = new ChatClient(ws, this.onDisconnect.bind(this)); 
         client.userName = generateName();
         this.connections.push(client);
