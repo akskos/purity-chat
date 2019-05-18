@@ -67,7 +67,7 @@ class ChatRoom {
 
     onConnection(ws) {
         console.log('Connection received');
-        var client = new ChatClient(ws); 
+        var client = new ChatClient(ws, this.onDisconnect.bind(this)); 
         client.userName = generateName();
         this.connections.push(client);
         ws.on('message', (msg) => {
@@ -84,6 +84,7 @@ class ChatRoom {
 
     onDisconnect(ws) {
         console.log("User disconnected");
+        ws.terminate();
         let indexToRemove = -1
         for (let i in this.connections) {
             if (this.connections[i].ws === ws) {
@@ -109,6 +110,8 @@ class ChatRoom {
             nun: this.nun.getStatusMessage()
         };
     }
+
+
 }
 
 module.exports = ChatRoom;
