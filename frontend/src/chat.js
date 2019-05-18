@@ -4,9 +4,10 @@ import { addListener, sendMessage } from "./ws.js";
 import './chat.css';
 import nun1 from './assets/nun1.png';
 import nun3 from './assets/nun3.png';
-import nun4 from './assets/nun4.png';
+import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
 import nun6 from './assets/nun6.png';
+import nun7 from './assets/shame.gif';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -37,7 +38,9 @@ export default class Chat extends React.Component {
       const users = message.users; 
       const usersText = `${users.join(' ')} are discussing`;
       const usersMsg = this.buildMessage(usersText, message.sender);
-      this.setState({messages: [...this.state.messages, usersMsg]})
+      this.setState({messages: [...this.state.messages, usersMsg]});
+      const initialAngerLevel = message.nun.anger;
+      this.setState({nun: this.mapAngerLevelToImage(initialAngerLevel)});
       break;
     case 'msg':
       const msg = this.buildMessage(message.text, message.sender);
@@ -47,6 +50,16 @@ export default class Chat extends React.Component {
       const connectionText = `${message.userName} has joined`;
       const connMsg = this.buildMessage(connectionText, message.sender)
       this.setState({messages: [...this.state.messages, connMsg]})
+      break;
+    case 'excommunicated':
+      const excommunicationText = `${message.userName} has been excommunicated!`;
+      const excommunicationMsg = this.buildMessage(excommunicationText, "overlord")
+      this.setState({messages: [...this.state.messages, excommunicationMsg]})
+      break;
+    case 'userDisconnected':
+      const disconText = `${message.userName} has turned their back on God`;
+      const disconMsg = this.buildMessage(disonText, "overlord")
+      this.setState({messages: [...this.state.messages, disconMsg]})
       break;
     case 'nunStatus':
       const angerLevel = message.anger;
@@ -66,13 +79,16 @@ export default class Chat extends React.Component {
       return nun3;
       break;
     case 2:
-      return nun4;
+      return nun5;
       break;
     case 3:
-      return nun5;
+      return nun4;
       break;
     case 4:
       return nun6;
+      break;
+    case 5:
+      return nun7;
       break;
     default:
       break;
@@ -88,7 +104,7 @@ export default class Chat extends React.Component {
     return {
       id: uuid(),
       text,
-      sender,
+      sender: sender ? sender : "info",
     };
   }
 
@@ -116,12 +132,7 @@ export default class Chat extends React.Component {
         </form>
         <div className="center" id="chatbox">
           {this.state.messages.map(item => {
-            let text;
-            if (item.sender === 'overlord') {
-              text = `NUN: ${item.text}`;
-            } else {
-              text = item.text; 
-            }
+            let text = `${item.sender}: ${item.text}`;
             return {
               text,
               id: item.id 
