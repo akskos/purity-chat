@@ -80,8 +80,6 @@ export default class Chat extends React.Component {
   }
 
   componentDidUpdate() {
-    const latestId = this.state.messages[this.state.messages.length-1].id;
-    console.log("latest id: ", latestId)
     const chatbox = document.getElementById("chatbox");
     chatbox.scrollTop = chatbox.scrollHeight;
   }
