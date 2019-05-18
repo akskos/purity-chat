@@ -34,6 +34,13 @@ stupidhack project
 	"text": String  
 }
 
+### Receiving a message from the nun:
+{  
+	"type": "msg",  
+	"sender": "overlord",  
+	"text": String  
+}
+
 ### Receiving user connect and disconnect messages:
 {  
 	"type": "userConnected"/"userDisconnected"  

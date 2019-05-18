@@ -6,7 +6,14 @@ class ChatRoom {
     constructor() {
         this.connections = [];
         this.messages = [];
-        this.nun = new Nun();
+        this.nun = new Nun((msg) => {
+            message = {
+                type: "msg",
+                sender: "overlord",
+                text: msg
+            };
+            this.sendMessage(message);
+        });
     }
 
     sendAll(jsonMessage) {
@@ -36,14 +43,7 @@ class ChatRoom {
                     sender: client.userName, 
                     text: filteredText
                 };
-                this.messages.push({
-                    sender: client.userName,
-                    text: filteredText
-                });
-                if (this.messages.length > 100) {
-                    this.messages.shift();
-                }
-                this.sendAll(message);
+                
                 this.sendAll(this.nun.getStatusMessage())
             }
 
@@ -53,6 +53,14 @@ class ChatRoom {
         } catch (e) {
             console.warn(e.message);
         }
+    }
+
+    sendMessage(messageObj) {
+        this.messages.push(messageObj);
+        if (this.messages.length > 100) {
+            this.messages.shift();
+        }
+        this.sendAll(messageObj);
     }
 
     onConnection(ws) {
