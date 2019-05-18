@@ -4,6 +4,14 @@ var readline = require('readline');
 const minAnger = 0;
 const maxAnger = 4;
 
+const badMessageOptions = [
+    '_ is BLASPHEMY!', 
+    '_ is against the will of the One Above',
+    'You are walking a dangerous path with _',
+    'My wrath shall descend on those who mention __',
+    '_ is for heathens and pagans'
+];
+
 class Nun {
     constructor(talkCallbackArg) {
         this._anger = minAnger;
@@ -15,7 +23,7 @@ class Nun {
         this.previousMessageSender = null;
         setInterval(() => {
             if (this.messagesSinceLastGuidance > 6) {
-                this.talk('Help me get rid of hateful motherfuckos. Type \"Excommunicate\" if you find the previous message is bad bad bad, to help me fight blasphemy!', 0);
+                this.talk('Help me cleanse the unbelievers and heathens in this chat. Type "excommunicate" to report the sender of the previous message', 0);
                 this.messagesSinceLastGuidance = 0;
             }
         }, 60000);
@@ -38,18 +46,17 @@ class Nun {
     }
 
     tryExcommunicate(sender) {
-        if (this.messagesSinceLastGuidance == 0) {
-            this.talk('You know what happens when you try to excommunicate me, don\'t you?', 300);
-            setTimeout(sender.disconnect.bind(sender), 500);
-        } else if (this.previousMessageSender) {
+        if (this.previousMessageSender) {
             if (sender === this.previousMessageSender) {
-                this.talk('What you doing, you cannot excommunicate yourself...', 300);
+                this.talk('You may not excommunicate yourself. Only your brethren can decide your faith.', 300);
             } else if (sender.reputation < this.previousMessageSender.reputation) {
-                this.talk(this.previousMessageSender.userName + " is an honorable member of our community. Leave now.", 300);
+                this.talk(this.previousMessageSender.userName + " is a righteous member of our community and will not be excommunicated. You are hereby banished from this chat.", 300);
                 setTimeout(sender.disconnect.bind(sender), 500);
             } else if (sender.reputation > this.previousMessageSender.reputation) {
-                this.talk("I have learnt to trust you, " + sender.userName + ", " + this.previousMessageSender.userName + "must go!", 300);
+                this.talk(this.previousMessageSender.userName + " is a heathen and has been excommunicated", 300);
                 setTimeout(this.previousMessageSender.disconnect.bind(this.previousMessageSender), 500);
+            } else {
+                this.talk("You are both equal in the eyes of our Lord. I don't know why to bellieve. You may both stay.", 300);
             }
         }
     }
@@ -83,7 +90,7 @@ class Nun {
 
         if (curses.length > 0) {
             sender.reputation -= 0.6 * curses.length;
-            this.talk("Careful with " + curses.join(', '), Math.random() * 2000);
+            this.talk(this.randomBadWordMessage(curses[0]), Math.random() * 2000);
         }
 
         if (holies.length > 0) {
@@ -116,6 +123,11 @@ class Nun {
     }
 
     get anger() { return this._anger; }
+
+    randomBadWordMessage(badWord) {
+        let message = badMessageOptions[Math.floor(Math.random() * badMessageOptions)];
+        return message.replace('_', badWord);
+    }
 }
 
 module.exports = Nun;
