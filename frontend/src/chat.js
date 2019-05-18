@@ -96,13 +96,15 @@ export default class Chat extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     sendMessage(this.state.inputTextValue);
+    this.setState({inputTextValue: ""});
+    document.getElementById("textInput").value = "";
   }
 
   render() {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
+          <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
         <div id="chatbox">
