@@ -39,16 +39,16 @@ class Nun {
 
     tryExcommunicate(sender) {
         if (this.messagesSinceLastGuidance == 0) {
-            talk('You know what happens when you try to excommunicate me, don\'t you?', 0);
-            setTimeOut(sender.disconnect.bind(sender));
+            this.talk('You know what happens when you try to excommunicate me, don\'t you?', 300);
+            setTimeout(sender.disconnect.bind(sender), 500);
         } else if (this.previousMessageSender) {
             if (sender === this.previousMessageSender) {
-                talk('What you doing, you cannot excommunicate yourself...', 300);
+                this.talk('What you doing, you cannot excommunicate yourself...', 300);
             } else if (sender.reputation < this.previousMessageSender.reputation) {
-                talk(this.previousMessageSender.userName + " is an honorable member of our community. Leave now.", 300);
+                this.talk(this.previousMessageSender.userName + " is an honorable member of our community. Leave now.", 300);
                 setTimeout(sender.disconnect.bind(sender), 500);
             } else if (sender.reputation > this.previousMessageSender.reputation) {
-                talk("I have learnt to trust you, " + sender.userName + ", " + this.previousMessageSender.userName + "must go!", 300);
+                this.talk("I have learnt to trust you, " + sender.userName + ", " + this.previousMessageSender.userName + "must go!", 300);
                 setTimeout(this.previousMessageSender.disconnect.bind(this.previousMessageSender), 500);
             }
         }
@@ -83,12 +83,12 @@ class Nun {
 
         if (curses.length > 0) {
             sender.reputation -= 0.6 * curses.length;
-            this.talk("Careful with " + curses.join(', '), Math.random(2000));
+            this.talk("Careful with " + curses.join(', '), Math.random() * 2000);
         }
 
-        if (holies.length > 1) {
-            sender.reputation += 0.6 * curses.length;
-            this.talk("Blessed be those who talk like angels. " + sender.userName + " earned a purity coin <3", Math.random(2000));
+        if (holies.length > 0) {
+            sender.reputation += 0.6 * holies.length;
+            this.talk("Blessed be those who talk like angels. " + sender.userName + " earned a purity coin <3", Math.random() * 2000);
         }
 
         this.previousMessageSender = sender;

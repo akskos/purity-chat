@@ -68,7 +68,7 @@ class ChatRoom {
     onConnection(ws) {
         console.log('Connection received');
         this.nun.messagesSinceLastGuidance++;
-        var client = new ChatClient(ws, this.onDisconnect.bind(this)); 
+        var client = new ChatClient(ws, this.onDisconnect.bind(this), this.onExcommunicate.bind(this)); 
         client.userName = generateName();
         this.connections.push(client);
         ws.on('message', (msg) => {
@@ -81,9 +81,7 @@ class ChatRoom {
         });
     }
 
-    onDisconnect(ws) {
-        console.log("User disconnected");
-        ws.terminate();
+    disconnectWithMessageType(ws, type) {
         let indexToRemove = -1
         for (let i in this.connections) {
             if (this.connections[i].ws === ws) {
@@ -97,6 +95,20 @@ class ChatRoom {
         }
 
         this.connections.splice(indexToRemove, 1);
+
+        ws.terminate();
+    }
+
+    onDisconnect(ws) {
+        console.log("User disconnected");
+        
+        this.disconnectWithMessageType(ws, 'userDisconnected');
+    }
+
+    onExcommunicate(chatClient) {
+        console.log('Excommunication');
+        
+        this.disconnectWithMessageType(chatClient.ws, 'excommunication');
     }
 
     getInfoMessage() {

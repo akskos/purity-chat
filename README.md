@@ -47,6 +47,12 @@ stupidhack project
 	"userName": String  
 }
 
+### Receiving excommunication message:
+{  
+	"type": "excommunicated",  
+	"userName": String  
+}
+
 ### Receiving nun status:
 {  
 	"type": "nunStatus",  
