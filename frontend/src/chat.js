@@ -48,6 +48,16 @@ export default class Chat extends React.Component {
       const connMsg = this.buildMessage(connectionText, message.sender)
       this.setState({messages: [...this.state.messages, connMsg]})
       break;
+    case 'excommunicated':
+      const excommunicationText = `${message.userName} has been excommunicated!`;
+      const excommunicationMsg = this.buildMessage(excommunicationText, "overlord")
+      this.setState({messages: [...this.state.messages, excommunicationMsg]})
+      break;
+    case 'userDisconnected':
+      const disconText = `${message.userName} has turned their back on God`;
+      const disconMsg = this.buildMessage(disonText, "overlord")
+      this.setState({messages: [...this.state.messages, disconMsg]})
+      break;
     case 'nunStatus':
       const angerLevel = message.anger;
       this.setState({nun: this.mapAngerLevelToImage(angerLevel)});
