@@ -9,7 +9,7 @@ class ChatRoom {
         this.nun = new Nun((msg) => {
             let message = {
                 type: "msg",
-                sender: "overlord",
+                sender: "The Voice Above",
                 text: msg
             };
             this.sendMessage(message);
