@@ -8,7 +8,7 @@ const badMessageOptions = [
     '_ is BLASPHEMY!', 
     '_ is against the will of the One Above',
     'You are walking a dangerous path with _',
-    'My wrath shall descend on those who mention __',
+    'My wrath shall descend on those who mention _',
     '_ is for heathens and pagans'
 ];
 
@@ -54,7 +54,7 @@ class Nun {
                 setTimeout(sender.disconnect.bind(sender), 500);
             } else if (sender.reputation > this.previousMessageSender.reputation) {
                 this.talk(this.previousMessageSender.userName + " is a heathen and has been excommunicated", 300);
-                setTimeout(this.previousMessageSender.disconnect.bind(this.previousMessageSender), 500);
+                setTimeout(this.previousMessageSender.excommunicate.bind(this.previousMessageSender), 500);
             } else {
                 this.talk("You are both equal in the eyes of our Lord. I don't know why to bellieve. You may both stay.", 300);
             }
