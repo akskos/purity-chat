@@ -1,10 +1,11 @@
 const pingRate = 6000;
 
 class ChatClient {
-    constructor(wsArg, onDisconnect) {
+    constructor(wsArg, onDisconnect, onExcommunication) {
         this.userName = '';
         this.ws = wsArg;
         this.onDisconnectCb = onDisconnect;
+        this.excommunicationCb = onExcommunication;
         this.alive = true;
         this.reputation = 5;
         this.pingInterval = setInterval(() => {
@@ -23,6 +24,13 @@ class ChatClient {
     disconnect() {
         clearInterval(this.pingInterval);
         this.onDisconnectCb(this.ws);
+    }
+
+    excommunicate() {
+        clearInterval(this.pingInterval);
+        if (this.excommunicationCb) {
+            this.excommunicationCb(this);
+        }
     }
 }
 
