@@ -7,6 +7,7 @@ import nun3 from './assets/nun3.png';
 import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
 import nun6 from './assets/shame.gif';
+import header from './assets/header1.png';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -125,6 +126,7 @@ export default class Chat extends React.Component {
   render() {
     return (
       <div>
+        <img id="header" className="center" src={header}></img>
         <form onSubmit={this.handleSubmit}>
           <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />

@@ -10,6 +10,7 @@
 }
 
 #chatbox {
+  margin-top: 120px;
   width: 400px;
   height: 280px;
   background: url('./assets/chatbox-with-wings.png');
@@ -28,3 +29,11 @@
   right: 0px;
   padding: 10px;
 } 
+
+#header {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  height: 300px;
+  z-index: -1;
+}
