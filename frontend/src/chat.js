@@ -4,7 +4,7 @@ import { addListener, sendMessage } from "./ws.js";
 import './chat.css';
 import nun1 from './assets/nun1.png';
 import nun3 from './assets/nun3.png';
-import nun4 from './assets/nun4.png';
+import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
 import nun6 from './assets/nun6.png';
 
