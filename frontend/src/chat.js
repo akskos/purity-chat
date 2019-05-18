@@ -1,4 +1,5 @@
 import React from "react";
+import uuid from "uuid/v4";
 import { addListener, sendMessage } from "./ws.js";
 import './chat.css';
 import nun1 from './assets/nun1.png';
@@ -78,8 +79,14 @@ export default class Chat extends React.Component {
     } 
   }
 
+  componentDidUpdate() {
+    const latestId = this.state.messages[this.state.messages.length-1].id;
+    console.log("latest id: ", latestId)
+  }
+
   buildMessage(text, sender) {
     return {
+      id: uuid(),
       text,
       sender,
     };
@@ -109,13 +116,18 @@ export default class Chat extends React.Component {
         </form>
         <div id="chatbox">
           {this.state.messages.map(item => {
+            let text;
             if (item.sender === 'overlord') {
-              return `NUN: ${item.text}`;
+              text = `NUN: ${item.text}`;
             } else {
-              return item.text; 
-            }                                  
-          }).map((text, key) =>
-            <p className="testClass" key={key}>{text}</p>
+              text = item.text; 
+            }
+            return {
+              text,
+              id: item.id 
+            };
+          }).map((msg, key) =>
+            <p className="testClass" id={msg.id} key={key}>{msg.text}</p>
           )}
         </div>
         <img id="nun" src={this.state.nun}></img>
