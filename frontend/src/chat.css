@@ -6,7 +6,7 @@
   position: fixed;
   right: 0px;
   bottom: 0px;
-  width: 200px;
+  width: 300px;
 }
 
 #chatbox {
@@ -15,12 +15,17 @@
   height: 280px;
   background: url('./assets/chatbox-with-wings.png');
   background-size: contain;
-  overflow-y: scroll;
   padding-left: 400px;
   padding-right: 400px;
   padding-top: 100px;
   padding-bottom: 100px;
   position: absolute;
+}
+
+#chattext {
+  overflow-y: scroll;
+  width: 100%;
+  height: 240px;
 }
 
 .center {
@@ -36,4 +41,8 @@
   top: 0px;
   height: 300px;
   z-index: -1;
+}
+
+form {
+  margin-top: 10px;
 }

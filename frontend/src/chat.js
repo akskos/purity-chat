@@ -127,20 +127,22 @@ export default class Chat extends React.Component {
     return (
       <div>
         <img id="header" className="center" src={header}></img>
-        <form onSubmit={this.handleSubmit}>
-          <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
-          <input type="submit" value="send" />
-        </form>
         <div className="center" id="chatbox">
-          {this.state.messages.map(item => {
-            let text = `${item.sender}: ${item.text}`;
-            return {
-              text,
-              id: item.id 
-            };
-          }).map((msg, key) =>
-            <p className="testClass" id={msg.id} key={key}>{msg.text}</p>
-          )}
+          <div id="chattext">
+            {this.state.messages.map(item => {
+              let text = `${item.sender}: ${item.text}`;
+              return {
+                text,
+                id: item.id 
+              };
+            }).map((msg, key) =>
+              <p className="testClass" id={msg.id} key={key}>{msg.text}</p>
+            )}
+          </div>
+          <form onSubmit={this.handleSubmit}>
+            <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
+            <input type="submit" value="send" />
+          </form>
         </div>
         <img id="nun" src={this.state.nun}></img>
       </div>
