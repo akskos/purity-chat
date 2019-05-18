@@ -1,7 +1,7 @@
 let adjectives = [
     'Holy', 'Pure', 'Heavenly', 'Righteous',
-    'Heist', 'Honorable', 'Altruistic', 'Angelic',
-    'Absolut', 'Admirable', 'Valiant'
+    'Highest', 'Honorable', 'Altruistic', 'Angelic', 
+    'Admirable', 'Valiant', 'Dirty'
 ];
 
 let names = [
