@@ -14,23 +14,31 @@ export default class Chat extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.buildMessage = this.buildMessage.bind(this);
     addListener(this.addMessage);
   }
 
   addMessage(message) {
     switch (message.type) {
     case 'msg':
-      const text = message.text;
-      this.setState({messages: [...this.state.messages, text]});
+      const msg = this.buildMessage(message.text, message.sender);
+      this.setState({messages: [...this.state.messages, msg]})
       break;
     case 'userConnected':
-      const uname = message.userName;
-      const connectionText = `${uname} has joined`;
-      this.setState({messages: [...this.state.messages, connectionText]})
+      const connectionText = `${message.userName} has joined`;
+      const connMsg = this.buildMessage(connectionText, message.sender)
+      this.setState({messages: [...this.state.messages, connMsg]})
       break;
     default:
       break;
     } 
+  }
+
+  buildMessage(text, sender) {
+    return {
+      text,
+      sender: sender ? sender : 'angel',
+    };
   }
 
   sendMessage(event) {
@@ -53,8 +61,11 @@ export default class Chat extends React.Component {
           <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
-        {this.state.messages.map((item, key) =>
-          <p className="testClass" key={key}>{item}</p>
+        {this.state.messages.filter(m => m.sender !== 'overlord').map((item, key) =>
+          <p className="testClass" key={key}>{item.text}</p>
+        )}
+        {this.state.messages.filter(m => m.sender === 'overlord').map((item, key) =>
+          <p className="testClass" key={key}>NUN: {item.text}</p>
         )}
         <img id="nun" src={this.state.nun}></img>
       </div>
