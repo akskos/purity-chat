@@ -7,7 +7,7 @@ class ChatRoom {
         this.connections = [];
         this.messages = [];
         this.nun = new Nun((msg) => {
-            message = {
+            let message = {
                 type: "msg",
                 sender: "overlord",
                 text: msg
@@ -43,6 +43,8 @@ class ChatRoom {
                     sender: client.userName, 
                     text: filteredText
                 };
+
+                this.sendMessage(message);
                 
                 this.sendAll(this.nun.getStatusMessage())
             }
