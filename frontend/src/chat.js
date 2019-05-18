@@ -37,7 +37,9 @@ export default class Chat extends React.Component {
       const users = message.users; 
       const usersText = `${users.join(' ')} are discussing`;
       const usersMsg = this.buildMessage(usersText, message.sender);
-      this.setState({messages: [...this.state.messages, usersMsg]})
+      this.setState({messages: [...this.state.messages, usersMsg]});
+      const initialAngerLevel = message.nun.anger;
+      this.setState({nun: this.mapAngerLevelToImage(initialAngerLevel)});
       break;
     case 'msg':
       const msg = this.buildMessage(message.text, message.sender);
