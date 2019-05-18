@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import Chat from "./chat.js"
 import { init } from "./ws.js"
+import './index.css'
 
 window.onload = function() {
   init()

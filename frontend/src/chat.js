@@ -36,7 +36,6 @@ export default class Chat extends React.Component {
   render() {
     return (
       <div>
-        <img src={backgroundImg}></img>
         <form onSubmit={this.handleSubmit}>
           <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
