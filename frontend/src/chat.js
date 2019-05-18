@@ -7,6 +7,7 @@ import nun3 from './assets/nun3.png';
 import nun4 from './assets/cryingnun.gif';
 import nun5 from './assets/nun5.png';
 import nun6 from './assets/shame.gif';
+import header from './assets/header1.png';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -125,20 +126,23 @@ export default class Chat extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
-          <input type="submit" value="send" />
-        </form>
+        <img id="header" className="center" src={header}></img>
         <div className="center" id="chatbox">
-          {this.state.messages.map(item => {
-            let text = `${item.sender}: ${item.text}`;
-            return {
-              text,
-              id: item.id 
-            };
-          }).map((msg, key) =>
-            <p className="testClass" id={msg.id} key={key}>{msg.text}</p>
-          )}
+          <div id="chattext">
+            {this.state.messages.map(item => {
+              let text = `${item.sender}: ${item.text}`;
+              return {
+                text,
+                id: item.id 
+              };
+            }).map((msg, key) =>
+              <p className="testClass" id={msg.id} key={key}>{msg.text}</p>
+            )}
+          </div>
+          <form onSubmit={this.handleSubmit}>
+            <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
+            <input type="submit" value="send" />
+          </form>
         </div>
         <img id="nun" src={this.state.nun}></img>
       </div>
