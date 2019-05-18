@@ -53,12 +53,12 @@ export default class Chat extends React.Component {
       break;
     case 'excommunicated':
       const excommunicationText = `${message.userName} has been excommunicated!`;
-      const excommunicationMsg = this.buildMessage(excommunicationText, "overlord")
+      const excommunicationMsg = this.buildMessage(excommunicationText, "The Voice Above")
       this.setState({messages: [...this.state.messages, excommunicationMsg]})
       break;
     case 'userDisconnected':
       const disconText = `${message.userName} has turned their back on God`;
-      const disconMsg = this.buildMessage(disonText, "overlord")
+      const disconMsg = this.buildMessage(disonText, "The Voice Above")
       this.setState({messages: [...this.state.messages, disconMsg]})
       break;
     case 'nunStatus':
