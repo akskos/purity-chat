@@ -99,7 +99,7 @@ export default class Chat extends React.Component {
   }
 
   componentDidUpdate() {
-    const chatbox = document.getElementById("chatbox");
+    const chatbox = document.getElementById("chattext");
     chatbox.scrollTop = chatbox.scrollHeight;
   }
 
