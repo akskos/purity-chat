@@ -1,7 +1,7 @@
 import React from "react";
 import { addListener, sendMessage } from "./ws.js";
 import './chat.css';
-import backgroundImg from './assets/backgroundclouds.png';
+import nun1 from './assets/nun1.png';
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -9,6 +9,7 @@ export default class Chat extends React.Component {
     this.state = {
       messages: [],
       inputTextValue: '',
+      nun: nun1,
     }
 		this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,6 +56,7 @@ export default class Chat extends React.Component {
         {this.state.messages.map((item, key) =>
           <p className="testClass" key={key}>{item}</p>
         )}
+        <img id="nun" src={this.state.nun}></img>
       </div>
     )
   }
