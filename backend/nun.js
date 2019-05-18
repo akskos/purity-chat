@@ -125,7 +125,7 @@ class Nun {
     get anger() { return this._anger; }
 
     randomBadWordMessage(badWord) {
-        let message = badMessageOptions[Math.floor(Math.random() * badMessageOptions)];
+        let message = badMessageOptions[Math.floor(Math.random() * badMessageOptions.length())];
         return message.replace('_', badWord);
     }
 }
