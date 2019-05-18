@@ -105,15 +105,17 @@ export default class Chat extends React.Component {
           <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
-        {this.state.messages.map(item => {
-          if (item.sender === 'overlord') {
-            return `NUN: ${item.text}`;
-          } else {
-            return item.text; 
-          }                                  
-        }).map((text, key) =>
-          <p className="testClass" key={key}>{text}</p>
-        )}
+        <div id="chatbox">
+          {this.state.messages.map(item => {
+            if (item.sender === 'overlord') {
+              return `NUN: ${item.text}`;
+            } else {
+              return item.text; 
+            }                                  
+          }).map((text, key) =>
+            <p className="testClass" key={key}>{text}</p>
+          )}
+        </div>
         <img id="nun" src={this.state.nun}></img>
       </div>
     )
