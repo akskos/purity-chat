@@ -104,7 +104,7 @@ export default class Chat extends React.Component {
     return {
       id: uuid(),
       text,
-      sender,
+      sender: sender ? sender : "info",
     };
   }
 
@@ -132,12 +132,7 @@ export default class Chat extends React.Component {
         </form>
         <div className="center" id="chatbox">
           {this.state.messages.map(item => {
-            let text;
-            if (item.sender === 'overlord') {
-              text = `NUN: ${item.text}`;
-            } else {
-              text = item.text; 
-            }
+            let text = `${item.sender}: ${item.text}`;
             return {
               text,
               id: item.id 
