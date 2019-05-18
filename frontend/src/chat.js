@@ -25,6 +25,19 @@ export default class Chat extends React.Component {
 
   addMessage(message) {
     switch (message.type) {
+    case 'info':
+      console.log('got info');
+      const messages = message.messages.map(m => {
+        if (m.type === 'msg') {
+          return this.buildMessage(m.text, m.sender); 
+        }
+      });
+      this.setState({messages});
+      const users = message.users; 
+      const usersText = `${users.join(' ')} are discussing`;
+      const usersMsg = this.buildMessage(usersText, message.sender);
+      this.setState({messages: [...this.state.messages, usersMsg]})
+      break;
     case 'msg':
       const msg = this.buildMessage(message.text, message.sender);
       this.setState({messages: [...this.state.messages, msg]})
@@ -68,7 +81,7 @@ export default class Chat extends React.Component {
   buildMessage(text, sender) {
     return {
       text,
-      sender: sender ? sender : 'angel',
+      sender,
     };
   }
 
@@ -83,21 +96,28 @@ export default class Chat extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     sendMessage(this.state.inputTextValue);
+    this.setState({inputTextValue: ""});
+    document.getElementById("textInput").value = "";
   }
 
   render() {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
+          <input id="textInput" type="text" placeholder="speaketh thy mind..." onChange={this.handleChange} />
           <input type="submit" value="send" />
         </form>
-        {this.state.messages.filter(m => m.sender !== 'overlord').map((item, key) =>
-          <p className="testClass" key={key}>{item.text}</p>
-        )}
-        {this.state.messages.filter(m => m.sender === 'overlord').map((item, key) =>
-          <p className="testClass" key={key}>NUN: {item.text}</p>
-        )}
+        <div id="chatbox">
+          {this.state.messages.map(item => {
+            if (item.sender === 'overlord') {
+              return `NUN: ${item.text}`;
+            } else {
+              return item.text; 
+            }                                  
+          }).map((text, key) =>
+            <p className="testClass" key={key}>{text}</p>
+          )}
+        </div>
         <img id="nun" src={this.state.nun}></img>
       </div>
     )
