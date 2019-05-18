@@ -8,7 +8,8 @@ export const init = () => {
   ws.onmessage = function(event) {
     console.log(event)
     listeners.forEach(l => {
-      l(event.data)
+      const parsedData = JSON.parse(event.data);
+      l(parsedData)
     });
   }
 }

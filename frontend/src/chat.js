@@ -16,8 +16,20 @@ export default class Chat extends React.Component {
     addListener(this.addMessage);
   }
 
-  addMessage(text) {
-    this.setState({messages: [...this.state.messages, text]});
+  addMessage(message) {
+    switch (message.type) {
+    case 'msg':
+      const text = message.text;
+      this.setState({messages: [...this.state.messages, text]});
+      break;
+    case 'userConnected':
+      const uname = message.userName;
+      const connectionText = `${uname} has joined`;
+      this.setState({messages: [...this.state.messages, connectionText]})
+      break;
+    default:
+      break;
+    } 
   }
 
   sendMessage(event) {
