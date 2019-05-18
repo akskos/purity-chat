@@ -103,7 +103,7 @@ export default class Chat extends React.Component {
     return {
       id: uuid(),
       text,
-      sender: sender ? sender : "info",
+      sender: sender ? sender : "The Voice Above",
     };
   }
 
